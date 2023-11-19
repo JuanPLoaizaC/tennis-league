@@ -1,6 +1,7 @@
 'use client'
 import TennisRacquet from '@public/TennisRacquet.png';
 import Image from 'next/image';
+import Link from 'next/link';
 export default function LoginPage() {
 
   return (
@@ -19,7 +20,6 @@ export default function LoginPage() {
               <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
             </div>
             <form className="mt-8 space-y-6" onSubmit={(e) => e.preventDefault()} >
-              <input type="hidden" name="remember" defaultValue="true" />
               <div className="rounded-md shadow-sm -space-y-px">
                 <div>
                   <label htmlFor="email-address" className="sr-only">
@@ -32,7 +32,7 @@ export default function LoginPage() {
                     autoComplete="email"
                     required
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Email address"
+                    placeholder="Email"
                   />
                 </div>
                 <div>
@@ -65,7 +65,6 @@ export default function LoginPage() {
                   </a>
                 </div>
               </div>
-
               <div>
                 <button
                   type="button"
@@ -75,6 +74,11 @@ export default function LoginPage() {
                 </button>
               </div>
             </form>
+            <div className="text-sm">
+              <Link href="/auth/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+                Create an account
+              </Link>
+            </div>
           </div>
         </div>
       </div>
