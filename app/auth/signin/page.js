@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from 'app/hooks/useAuth';
 import Image from 'next/image';
@@ -11,8 +11,18 @@ export default function LoginPage() {
   const auth = useAuth();
   const [user, setUser] = useState({
 		email: '',
-		password: ''
+		password: '',
+    rememberMe: false
 	});
+
+  useEffect(() => {
+    if (localStorage.getItem('userSignInInfo')) {
+      let userInfo = localStorage.getItem('userSignInInfo');
+      if (userInfo?.rememberMe) {
+        setUser(JSON.parse(localStorage.getItem('userSignInInfo')));
+      }
+    }
+  }, [])
 
 	const conditionsToClick = () => {
 		return user.email === '' || user.password === '';
@@ -41,9 +51,17 @@ export default function LoginPage() {
       });
     });
     if (response) {
-      
+      fillInformationStorage(response);
     }
 	};
+
+  const fillInformationStorage = (userResponse) => {
+    if (user.rememberMe) {
+      localStorage.setItem('userSignInInfo', JSON.stringify(user));
+    } else {
+      localStorage.setItem('userSignInInfo', null);
+    }
+  };
 
   return (
     <>
@@ -74,6 +92,7 @@ export default function LoginPage() {
                     required
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     placeholder="Email"
+                    value={user.email}
                     onChange={({ target }) => setUser({... user, email: target.value})}
                   />
                 </div>
@@ -89,6 +108,7 @@ export default function LoginPage() {
                     required
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     placeholder="Password"
+                    value={user.password}
                     onChange={({ target }) => setUser({... user, password: target.value})}
                   />
                 </div>
@@ -96,7 +116,7 @@ export default function LoginPage() {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
+                  <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" checked={user.rememberMe} onChange={({ target }) => setUser({ ... user, rememberMe: target.checked })} />
                   <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
                     Remember me
                   </label>
