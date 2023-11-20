@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from 'app/hooks/useAuth';
+import Preloader from '@app/components/Preloader';
 import Image from 'next/image';
 import TennisRacquet from '@public/TennisRacquet.png';
 import Swal from 'sweetalert2';
@@ -14,6 +15,7 @@ export default function LoginPage() {
 		password: '',
     rememberMe: false
 	});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem('userSignInInfo')) {
@@ -29,7 +31,9 @@ export default function LoginPage() {
 	};
 
   const postSignIn = async () => {
+    setLoading(true);
 		let response = await auth.signIn(user).catch(error => {
+      setLoading(false);
       let { data } = error.response;
       Swal.fire({
         text: data.error,
@@ -51,11 +55,15 @@ export default function LoginPage() {
       });
     });
     if (response) {
-      fillInformationStorage(response);
+      let { data } = response;
+      setLoading(false);
+      fillInformationStorage(data.user);
     }
 	};
 
   const fillInformationStorage = (userResponse) => {
+    console.log(userResponse);
+    localStorage.setItem('userTennisLeague', JSON.stringify(userResponse));
     if (user.rememberMe) {
       localStorage.setItem('userSignInInfo', JSON.stringify(user));
     } else {
@@ -65,6 +73,13 @@ export default function LoginPage() {
 
   return (
     <>
+      {
+        loading
+        ?
+        <Preloader></Preloader>
+        :
+        null
+      }
       <div className="bg-white min-h-screen">
         <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-md w-full space-y-8">
