@@ -22,10 +22,10 @@ export default function SignUp() {
 	};
 
   const postSignUp = async () => {
-		let response = await auth.signIn(user).catch(error => {
+		let response = await auth.signUp(user).catch(error => {
       let { data } = error.response;
       Swal.fire({
-        title: data.error,
+        title: data.error,icon: 'error',
         showClass: {
           popup: `
             animate__animated
@@ -44,7 +44,7 @@ export default function SignUp() {
       });
     });
     if (response) {
-      
+
     }
 	};
 

@@ -16,7 +16,7 @@ export const useAuth = () => {
 
 const useProvideAuth = () => {
   
-  const signIn = async (user) => {  
+  const signUp = async (user) => {  
     const options = {
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +25,17 @@ const useProvideAuth = () => {
     return await axios.post('http://localhost:3000/api/auth/signup', user, options);
   };
 
+  const signIn = async (user) => {  
+    const options = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    return await axios.post('http://localhost:3000/api/auth/signin', user, options);
+  };
+
   return {
+    signUp,
     signIn
   };
 }

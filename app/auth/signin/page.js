@@ -1,8 +1,49 @@
-'use client'
-import TennisRacquet from '@public/TennisRacquet.png';
-import Image from 'next/image';
+'use client';
+import { useState } from 'react';
 import Link from 'next/link';
+import { useAuth } from 'app/hooks/useAuth';
+import Image from 'next/image';
+import TennisRacquet from '@public/TennisRacquet.png';
+import Swal from 'sweetalert2';
+import '@app/globals.css';
+
 export default function LoginPage() {
+  const auth = useAuth();
+  const [user, setUser] = useState({
+		email: '',
+		password: ''
+	});
+
+	const conditionsToClick = () => {
+		return user.email === '' || user.password === '';
+	};
+
+  const postSignIn = async () => {
+		let response = await auth.signIn(user).catch(error => {
+      let { data } = error.response;
+      Swal.fire({
+        text: data.error,
+        icon: 'error',
+        showClass: {
+          popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+          `
+        },
+        hideClass: {
+          popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+          `
+        }
+      });
+    });
+    if (response) {
+      
+    }
+	};
 
   return (
     <>
@@ -33,6 +74,7 @@ export default function LoginPage() {
                     required
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     placeholder="Email"
+                    onChange={({ target }) => setUser({... user, email: target.value})}
                   />
                 </div>
                 <div>
@@ -47,6 +89,7 @@ export default function LoginPage() {
                     required
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     placeholder="Password"
+                    onChange={({ target }) => setUser({... user, password: target.value})}
                   />
                 </div>
               </div>
@@ -59,16 +102,18 @@ export default function LoginPage() {
                   </label>
                 </div>
 
-                <div className="text-sm">
+                {/*
+                  <div className="text-sm">
                   <a href="/reset" className="font-medium text-indigo-600 hover:text-indigo-500">
                     Forgot your password?
                   </a>
                 </div>
+                */}
               </div>
               <div>
                 <button
                   type="button"
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" disabled={conditionsToClick()} onClick={postSignIn}
                 >
                   Sign in
                 </button>

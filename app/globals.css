@@ -2,26 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/* styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.swal2-popup {
+  font-size: 0.85em;
+  max-width: 25%;
+  border-radius: 8%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.swal2-popup.swal2-toast {
+  border-radius: 10%;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.swal2-confirm, .swal2-cancel {
+  border-radius: 8px; /* Ajusta el radio de los bordes de los botones según tus necesidades */
+  padding: 10px 20px; /* Ajusta el espacio interno de los botones según tus necesidades */
+  font-size: 1em; /* Ajusta el tamaño de fuente de los botones según tus necesidades */
+  color: #fff; /* Cambia el color del texto de los botones según tus preferencias */
+  background-color: #4caf50; /* Cambia el color de fondo de los botones según tus preferencias */
+  border: 1px solid #4caf50; /* Ajusta el color del borde de los botones según tus necesidades */
 }
