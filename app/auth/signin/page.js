@@ -2,13 +2,14 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from 'app/hooks/useAuth';
+import { useRouter } from 'next/navigation';
 import Preloader from '@app/components/Preloader';
 import Image from 'next/image';
 import TennisRacquet from '@public/TennisRacquet.png';
 import Swal from 'sweetalert2';
-import '@app/globals.css';
 
-export default function LoginPage() {
+export default function SignIn() {
+  const router = useRouter();
   const auth = useAuth();
   const [user, setUser] = useState({
 		email: '',
@@ -51,7 +52,8 @@ export default function LoginPage() {
             animate__fadeOutDown
             animate__faster
           `
-        }
+        },
+        timer: 1000
       });
     });
     if (response) {
@@ -68,6 +70,7 @@ export default function LoginPage() {
     } else {
       localStorage.setItem('userSignInInfo', null);
     }
+    router.push('/dashboard/leagues');
   };
 
   return (

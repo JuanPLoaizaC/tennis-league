@@ -7,9 +7,11 @@ import { useAuth } from 'app/hooks/useAuth';
 import Swal from 'sweetalert2';
 import 'animate.css';
 import Preloader from '@app/components/Preloader';
+import { useRouter } from 'next/navigation';
 //import GoogleLogo from '@public/Google.png';
 
 export default function SignUp() {
+  const router = useRouter();
   const auth = useAuth();
   const [user, setUser] = useState({
     name: '',
@@ -49,6 +51,7 @@ export default function SignUp() {
     });
     if (response) {
       setLoading(false);
+      router.push('/dashboard/leagues');
     }
 	};
 
