@@ -19,8 +19,8 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (localStorage.getItem('userSignInInfo')) {
-      let userInfo = localStorage.getItem('userSignInInfo');
-      if (userInfo?.rememberMe) {
+      let userInfo = JSON.parse(localStorage.getItem('userSignInInfo'));
+      if (userInfo?.rememberMe === true) {
         setUser(JSON.parse(localStorage.getItem('userSignInInfo')));
       }
     }
@@ -62,7 +62,6 @@ export default function LoginPage() {
 	};
 
   const fillInformationStorage = (userResponse) => {
-    console.log(userResponse);
     localStorage.setItem('userTennisLeague', JSON.stringify(userResponse));
     if (user.rememberMe) {
       localStorage.setItem('userSignInInfo', JSON.stringify(user));
