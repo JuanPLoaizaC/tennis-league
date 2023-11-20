@@ -1,31 +1,51 @@
 'use client'
-import { useEffect, useState } from 'react';
-import TennisRacquet from '@public/TennisRacquet.png';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import axios from 'axios';
+import TennisRacquet from '@public/TennisRacquet.png';
+import { useAuth } from 'app/hooks/useAuth';
+import Swal from 'sweetalert2';
+import 'animate.css';
+//import GoogleLogo from '@public/Google.png';
 
-export default function Example() {
-	const [user, setUser] = useState({
-		name: '',
+export default function SignUp() {
+  const auth = useAuth();
+  const [user, setUser] = useState({
+    name: '',
 		email: '',
 		password: '',
 		repeatPassword: ''
 	});
-	const [showPassword, setShowPassword] = useState(false);
 
 	const conditionsToClick = () => {
 		return user.name === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(user.email) || user.password < 8 || user.password !== user.repeatPassword;
 	};
 
   const postSignUp = async () => {
-    console.log(user);
-		let response = await axios.post('http://localhost:3000/api/auth/signup', user, {
-      headers: {
-          'Content-Type': 'application/json',
-      },
+		let response = await auth.signIn(user).catch(error => {
+      let { data } = error.response;
+      Swal.fire({
+        title: data.error,
+        showClass: {
+          popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+          `
+        },
+        hideClass: {
+          popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+          `
+        },
+        timer: 1000
+      });
     });
-		console.log(response);
+    if (response) {
+      
+    }
 	};
 
   return (
@@ -72,7 +92,6 @@ export default function Example() {
 									className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm mt-2"
 									value={user.email}
 									onChange={({ target}) => setUser({ ... user, email: target.value })}
-									pattern='[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
 								/>
 								{
 									user.email !== "" && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(user.email) && 
@@ -114,14 +133,37 @@ export default function Example() {
 								}
 							</div>
 						</div>
-						<div className="mt-6 flex items-center justify-end gap-x-6">
-                <button
-                  type="button"
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" disabled={conditionsToClick()} onClick={postSignUp}
-                >
-                  Sign up
-                </button>
-              </div>
+            <div className="mt-5 flex items-center justify-end gap-x-6">
+              <button
+                type="button"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" disabled={conditionsToClick()} onClick={postSignUp}
+              >
+                Sign up
+              </button>
+            </div>
+            {
+              /*
+                <div>
+                  <p className="mt-6 text-center text-gray-900">Or continue with:</p>
+                </div>
+                <div className="mt-6 flex items-center justify-end gap-x-6">
+                  <button
+                    type="button"
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-white outline outline-offset-2 outline-1" onClick={() => signIn()}
+                  >
+                    <span>
+                      <Image
+                        src={GoogleLogo}
+                        alt=""
+                        width={15} 
+                        height={15}
+                      />
+                    </span>
+                    <p style={{ fontStyle: 'normal', fontFamily: 'inherit', fontSize: 'inherit' }}>Google</p>
+                  </button>
+                </div>
+              */
+            }
 					</form>
 					<div className="text-sm">
 						<Link href="/auth/signin" className="font-medium text-indigo-600 hover:text-indigo-500">
