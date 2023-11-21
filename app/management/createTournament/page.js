@@ -2,11 +2,13 @@
 import { useState } from 'react';
 import { useManageTournament } from '@app/hooks/useManageTournament';
 import TennisRacquet from '@public/TennisRacquet.png';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Preloader from '@app/components/Preloader';
 import Swal from 'sweetalert2';
 
 export default function CreateTournament() {
+  const router = useRouter();
   const manageTournament = useManageTournament();
   const [tournament, setTournament] = useState({
     name: '',
@@ -71,7 +73,7 @@ export default function CreateTournament() {
         }
       }).then((result) => {
         if (result.isConfirmed) {
-          
+          router.push('/management/manageTournaments');
         } else if (result.isDenied) {
           cleanData();
       }});
