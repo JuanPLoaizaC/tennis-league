@@ -31,7 +31,8 @@ export default function SignUp() {
       setLoading(false);
       let { data } = error.response;
       Swal.fire({
-        text: data.error,icon: 'error',
+        icon: 'error',
+        text: data.error,
         showClass: {
           popup: `
             animate__animated

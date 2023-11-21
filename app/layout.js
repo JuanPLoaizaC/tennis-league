@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google';
 import { ProviderAuth } from './hooks/useAuth';
+import { ProviderManageTournament } from './hooks/useManageTournament';
 //import Providers from './providers';
 import '@app/globals.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -17,7 +18,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <ProviderAuth>
-          {children}
+          <ProviderManageTournament>            
+            {children}
+          </ProviderManageTournament>
         </ProviderAuth>
       </body>
     </html>
