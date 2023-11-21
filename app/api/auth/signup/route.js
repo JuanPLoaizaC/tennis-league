@@ -11,6 +11,6 @@ export async function POST(req) {
       if (error.code === '23505') {
         return NextResponse.json({ error: 'The user already exists' }, { status: 400 });
       }
-      return NextResponse.json({ erro: 'An error has occurred' }, { status: 500 });
+      return NextResponse.json({ error: 'An error has occurred' }, { status: 500 });
     }
 }
