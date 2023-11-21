@@ -25,7 +25,7 @@ export default function SignIn() {
         setUser(JSON.parse(localStorage.getItem('userSignInInfo')));
       }
     }
-  }, [])
+  }, []);
 
 	const conditionsToClick = () => {
 		return user.email === '' || user.password === '';
@@ -70,7 +70,11 @@ export default function SignIn() {
     } else {
       localStorage.setItem('userSignInInfo', null);
     }
-    router.push('/dashboard/leagues');
+    if (userResponse.role === 'admin') {
+      router.push('/management/createTournament');
+    } else {
+      router.push('/dashboard/leagues');
+    }
   };
 
   return (
