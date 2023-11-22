@@ -5,8 +5,10 @@ import { useManageTournament } from '@app/hooks/useManageTournament';
 import Preloader from '@app/components/Preloader';
 import TennisTrophy from '@public/TennisTrophy.jpg';
 import Swal from 'sweetalert2';
+import { useRouter } from 'next/navigation';
 
-export default function ManageTournament() {
+export default function ManageTournaments() {
+  const router = useRouter();
   const manageTournament = useManageTournament();
   const [tournaments, setTournaments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -50,6 +52,11 @@ export default function ManageTournament() {
     }
   };
 
+  const rediectToEdit = (tournament) => {
+    manageTournament.setTournamentToEdit(tournament);
+    router.push('/management/editTournament');
+  };
+
   return (
     <>
       {
@@ -65,7 +72,7 @@ export default function ManageTournament() {
 
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {tournaments?.map((tournament) => (
-              <div key={tournament.id} className="group relative">
+              <div key={tournament.id} className="group relative" onClick={(tournament) => rediectToEdit(tournament)}>
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                 <Image
                   src={TennisTrophy}
@@ -74,12 +81,6 @@ export default function ManageTournament() {
                 </div>
                 <div className="mt-4 flex justify-between">
                   <div>
-                    <h3 className="text-sm text-gray-700">
-                      <a href={tournament?.href}>
-                        <span aria-hidden="true" className="absolute inset-0" />
-                        {tournament.name}
-                      </a>
-                    </h3>
                     <p className="mt-1 text-sm text-gray-500">{tournament.location}</p>
                   </div>
                   <p className="text-sm font-medium text-gray-900">{tournament.price}</p>

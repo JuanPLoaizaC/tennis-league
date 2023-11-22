@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, createContext } from 'react';
+import React, { useContext, createContext, useState } from 'react';
 import axios from 'axios';
 
 const ManageTournamentContext = createContext();
@@ -15,6 +15,7 @@ export const useManageTournament = () => {
 };
 
 const useProvideManageTournament = () => {
+  const [tournamentToEdit, setTournamentToEdit] = useState({});
 
   const getTournaments = async () => {
     const options = {
@@ -35,6 +36,8 @@ const useProvideManageTournament = () => {
   };
 
   return {
+    tournamentToEdit,
+    setTournamentToEdit,
     createTournament,
     getTournaments
   };

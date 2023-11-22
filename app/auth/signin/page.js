@@ -71,7 +71,7 @@ export default function SignIn() {
       localStorage.setItem('userSignInInfo', null);
     }
     if (userResponse.role === 'admin') {
-      router.push('/management/createTournament');
+      router.push('/management/manageTournaments');
     } else {
       router.push('/dashboard/leagues');
     }
@@ -142,14 +142,6 @@ export default function SignIn() {
                     Remember me
                   </label>
                 </div>
-
-                {/*
-                  <div className="text-sm">
-                  <a href="/reset" className="font-medium text-indigo-600 hover:text-indigo-500">
-                    Forgot your password?
-                  </a>
-                </div>
-                */}
               </div>
               <div>
                 <button
