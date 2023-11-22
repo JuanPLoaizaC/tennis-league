@@ -15,17 +15,27 @@ export const useManageTournament = () => {
 };
 
 const useProvideManageTournament = () => {
-  
-  const CreateTournament = async (manageTournament) => {  
+
+  const getTournaments = async () => {
     const options = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
-    return await axios.post('http://localhost:3000/api/management/createTournament', manageTournament, options);
+    return await axios.get('http://localhost:3000/api/management/tournamentsAdmin', options);
+  };
+  
+  const createTournament = async (manageTournament) => {  
+    const options = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    return await axios.post('http://localhost:3000/api/management/tournamentsAdmin', manageTournament, options);
   };
 
   return {
-    CreateTournament
+    createTournament,
+    getTournaments
   };
 }
