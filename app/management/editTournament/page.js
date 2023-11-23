@@ -22,7 +22,7 @@ function EditTournament() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (manageTournament.tournamentToEdit) {
+    if (Object.keys(manageTournament.tournamentToEdit).length > 0) {
       setTournament({
         id: manageTournament.tournamentToEdit.id,
         name: manageTournament.tournamentToEdit.name,
@@ -35,6 +35,10 @@ function EditTournament() {
     } else {
       router.push('/management/manageTournaments');
     }
+
+    return () => {
+      manageTournament.setTournamentToEdit({});
+    };
   }, []);
 
   const conditionsToClick = () => {

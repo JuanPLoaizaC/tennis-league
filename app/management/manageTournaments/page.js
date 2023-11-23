@@ -14,7 +14,6 @@ export default function ManageTournaments() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log('first')
     getService();
   }, []);
 
@@ -23,30 +22,32 @@ export default function ManageTournaments() {
     let response = await manageTournament.getTournaments().catch(error => {
       console.log(error);
       setLoading(false);
-      let { data } = error.response;
-      Swal.fire({
-        icon: 'error',
-        text: data.error,
-        showClass: {
-          popup: `
-            animate__animated
-            animate__fadeInUp
-            animate__faster
-          `
-        },
-        hideClass: {
-          popup: `
-            animate__animated
-            animate__fadeOutDown
-            animate__faster
-          `
-        },
-        timer: 1000
-      });
+      if (error?.response) {
+        let { data } = error.response;
+        Swal.fire({
+          icon: 'error',
+          text: data.error,
+          showClass: {
+            popup: `
+              animate__animated
+              animate__fadeInUp
+              animate__faster
+            `
+          },
+          hideClass: {
+            popup: `
+              animate__animated
+              animate__fadeOutDown
+              animate__faster
+            `
+          },
+          timer: 1000
+        });
+      }
     });
     if (response) {
       console.log(response.data);
-      let { data: { tournaments } } = response
+      let { data: { tournaments } } = response;
       setTournaments(tournaments);
       setLoading(false);
     }

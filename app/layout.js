@@ -4,6 +4,7 @@ import { ProviderManageTournament } from './hooks/useManageTournament';
 //import Providers from './providers';
 import '@app/globals.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import { ProviderManageUser } from './hooks/useManageUsers';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,8 +19,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <ProviderAuth>
-          <ProviderManageTournament>         
-            {children}
+          <ProviderManageTournament>
+            <ProviderManageUser>
+              {children}
+            </ProviderManageUser>         
           </ProviderManageTournament>
         </ProviderAuth>
       </body>

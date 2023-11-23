@@ -35,9 +35,12 @@ const AdminsNavbar = () => {
               <div class="flex space-x-4">
                 <Link href="/management/manageTournaments" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">See tournaments</Link>
                 <Link href="/management/createTournament" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Create tournament</Link>
-                <Link href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">See users</Link>
+                <Link href="/management/manageUsers" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">See users</Link>
               </div>
             </div>
+          </div>
+          <div class="relative ml-3">
+            <Link href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Sign out</Link>
           </div>
         </div>
       </div>

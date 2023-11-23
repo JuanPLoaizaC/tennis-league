@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-      let body = await req.json();
+    let body = req.json();
       let query = `SELECT
                       u.id AS id,
                       u.name AS name,
@@ -16,15 +16,17 @@ export async function POST(req) {
                   JOIN
                       "TennisLeague".roles r ON ur.role_id = r.id
                   WHERE
-                      u.email = '${body.email}' AND
-                      u.password = '${body.password}'`;
+                    u.email != '${body.email}'
+                  `;
       const result = await pool.query(query);
+      console.log(result.rows);
       if (result.rows.length > 0) {
-        return NextResponse.json({ user: result.rows[0] }, { status: 201 });
+        return NextResponse.json({ users: result.rows }, { status: 201 });
       } else {
-        return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
+        return NextResponse.json({ error: 'There are no tournaments' }, { status: 401 });
       }
     } catch (error) {
+      console.log(error);
       return NextResponse.json({ error: 'An error has occurred' }, { status: 500 });
     }
 }
