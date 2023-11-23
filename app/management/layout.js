@@ -1,10 +1,8 @@
 import { Inter } from 'next/font/google';
-import { ProviderAuth } from './hooks/useAuth';
-import { ProviderManageTournament } from './hooks/useManageTournament';
 //import Providers from './providers';
 import '@app/globals.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
-
+import AdminsNavbar from '@app/components/AdminsNavbar';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,12 +14,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <ProviderAuth>
-          <ProviderManageTournament>         
-            {children}
-          </ProviderManageTournament>
-        </ProviderAuth>
+      <body className={inter.className}>       
+          <AdminsNavbar />
+          {children}
       </body>
     </html>
   );
