@@ -35,10 +35,20 @@ const useProvideManageTournament = () => {
     return await axios.post('http://localhost:3000/api/management/tournamentsAdmin', manageTournament, options);
   };
 
+  const updateTournament = async (manageTournament) => {  
+    const options = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    return await axios.put('http://localhost:3000/api/management/tournamentsAdmin', manageTournament, options);
+  };
+
   return {
     tournamentToEdit,
     setTournamentToEdit,
+    getTournaments,
     createTournament,
-    getTournaments
+    updateTournament
   };
 }

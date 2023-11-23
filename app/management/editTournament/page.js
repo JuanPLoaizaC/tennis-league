@@ -1,15 +1,17 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useManageTournament } from '@app/hooks/useManageTournament';
 import TennisRacquet from '@public/TennisRacquet.png';
 import Preloader from '@app/components/Preloader';
 import Image from 'next/image';
+import Swal from 'sweetalert2';
 
 function EditTournament() {
   const router = useRouter();
   const manageTournament = useManageTournament();
   const [tournament, setTournament] = useState({
+    id: '',
     name: '',
     location: '',
     price: 0,
@@ -19,13 +21,29 @@ function EditTournament() {
   });
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (manageTournament.tournamentToEdit) {
+      setTournament({
+        id: manageTournament.tournamentToEdit.id,
+        name: manageTournament.tournamentToEdit.name,
+        location: manageTournament.tournamentToEdit.location,
+        price: manageTournament.tournamentToEdit.price,
+        startDate: manageTournament.tournamentToEdit.start_date,
+        endDate: manageTournament.tournamentToEdit.end_date,
+        description: manageTournament.tournamentToEdit.description
+      });
+    } else {
+      router.push('/management/manageTournaments');
+    }
+  }, []);
+
   const conditionsToClick = () => {
-		return tournament.name === '' || tournament.location === '' || tournament.startDate === '' || tournament.endDate === '' || tournament.startDate > tournament.endDate === '' || tournament.description === '' || tournament.description.length > 300;
+		return tournament.name === '' || tournament.location === '' || tournament.startDate === '' || tournament.endDate === '' || tournament.startDate > tournament.endDate === '' || tournament.description === '' || tournament.description?.length > 300;
 	};
 
-  const postCrateTournament = async () => {
+  const putUpdateTournament = async () => {
     setLoading(true);
-		let response = await manageTournament.CreateTournament(tournament).catch(error => {
+		let response = await manageTournament.updateTournament(tournament).catch(error => {
       setLoading(false);
       let { data } = error.response;
       Swal.fire({
@@ -55,7 +73,7 @@ function EditTournament() {
         text: 'Created succesfully',
         showDenyButton: true,
         confirmButtonText: 'See all tournaments',
-        denyButtonText: 'Create another',
+        denyButtonText: 'Keep editing',
         showClass: {
           popup: `
             animate__animated
@@ -73,9 +91,18 @@ function EditTournament() {
       }).then((result) => {
         if (result.isConfirmed) {
           router.push('/management/manageTournaments');
-        } else if (result.isDenied) {
-          cleanData();
-      }});
+        } else {
+          manageTournament.setTournamentToEdit({
+            id: tournament.id,
+            name: tournament.name,
+            location: tournament.location,
+            price: tournament.price,
+            start_date: tournament.startDate,
+            end_date: tournament.endDate,
+            description: tournament.description
+          });
+    
+        }});
     }
   };
 
@@ -180,7 +207,7 @@ function EditTournament() {
                         type="date"
                         name="startDate"
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                        value={tournament.startDate}
+                        defaultValue={tournament.startDate ? new Date(tournament.startDate).toISOString().split('T')[0] : ''}
                         onChange={({ target }) => setTournament({ ... tournament, startDate: target.value })}
                       />
                     </div>
@@ -204,7 +231,7 @@ function EditTournament() {
                         type="date"
                         name="endDate"
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                        value={tournament.endDate}
+                        value={tournament.endDate ? new Date(tournament.endDate).toLocaleDateString('en-CA') : ''}
                         onChange={({ target }) => setTournament({ ... tournament, endDate: target.value })}
                       />
                     </div>
@@ -236,7 +263,7 @@ function EditTournament() {
                     <p className="text-xs text-red-500 mt-1">Required field.</p>
                   }
                   {
-                    tournament.description.length > 300 && 
+                    tournament.description?.length > 300 && 
                     <p className="text-xs text-red-500 mt-1">Maximum 300 characters.</p>
                   }
                 </div>
@@ -246,9 +273,9 @@ function EditTournament() {
           <div className="mt-6 flex items-center justify-end gap-x-6">
             <button
               type="submit"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" disabled={conditionsToClick()} onClick={postCrateTournament}
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" disabled={conditionsToClick()} onClick={putUpdateTournament}
             >
-              Save
+              Edit
             </button>
           </div>
         </form>

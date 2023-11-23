@@ -28,3 +28,23 @@ export async function POST(req) {
       return NextResponse.json({ error: 'An error has occurred' }, { status: 500 });
     }
 }
+
+export async function PUT(req) {
+  try {
+      let body = await await req.json();
+      let query = `UPDATE "TennisLeague".tournaments SET 
+                    name = '${body.name}',
+                    start_date = '${body.startDate}',
+                    end_date = '${body.endDate}',
+                    location = '${body.location}',
+                    description = '${body.description}',
+                    price = ${body.price}
+                    WHERE id = ${body.id} RETURNING *`;
+      const result = await pool.query(query);
+      console.log(result);
+      return NextResponse.json({ data: result.rows[0] }, { status: 201 });
+    } catch (error) {
+      console.log(error);
+      return NextResponse.json({ error: 'An error has occurred' }, { status: 500 });
+    }
+}
